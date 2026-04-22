@@ -18,3 +18,8 @@ db.sqlite3
 .idea/
 *.swp
 EOF
+
+
+/media/
+/static/CACHE/
+*.log

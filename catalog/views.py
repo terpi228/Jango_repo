@@ -1,15 +1,23 @@
 from django.shortcuts import render
+from .models import Product, Contact
+
 
 def home(request):
-    return render(request, 'catalog/home.html')
+    products = Product.objects.all().order_by('-created_at')[:5]
+    for p in products:
+        print(f"Последний товар: {p.name} — {p.price} руб.")
+    return render(request, 'catalog/home.html', {'products': products})
+
 
 def contacts(request):
+    contact = Contact.objects.first()
     message_sent = False
+
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f"Имя: {name}, Телефон: {phone}, Сообщение: {message}")
+        # Здесь можно добавить логику отправки (пока просто заглушка)
         message_sent = True
-        return render(request, 'catalog/contacts.html', {'message_sent': True})
-    return render(request, 'catalog/contacts.html', {'message_sent': message_sent})
+
+    return render(request, 'catalog/contacts.html', {
+        'contact': contact,
+        'message_sent': message_sent
+    })
