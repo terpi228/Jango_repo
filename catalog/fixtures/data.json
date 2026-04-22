@@ -1,0 +1,70 @@
+[
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Фрукты",
+        "description": "Сочные фрукты"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Фрукты",
+        "description": "Сочные фрукты"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Яблоко",
+        "description": "Зелёное",
+        "image": "",
+        "category": 1,
+        "price": "100.00",
+        "created_at": "2026-04-21T22:49:03.347Z",
+        "updated_at": "2026-04-21T22:49:03.347Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Банан",
+        "description": "Спелый",
+        "image": "",
+        "category": 1,
+        "price": "150.00",
+        "created_at": "2026-04-21T22:49:03.351Z",
+        "updated_at": "2026-04-21T22:49:03.351Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Яблоко",
+        "description": "Зелёное",
+        "image": "",
+        "category": 2,
+        "price": "100.00",
+        "created_at": "2026-04-21T22:50:36.931Z",
+        "updated_at": "2026-04-21T22:50:36.931Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+        "name": "Банан",
+        "description": "Спелый",
+        "image": "",
+        "category": 2,
+        "price": "150.00",
+        "created_at": "2026-04-21T22:50:36.934Z",
+        "updated_at": "2026-04-21T22:50:36.934Z"
+    }
+}
+]

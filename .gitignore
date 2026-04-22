@@ -10,7 +10,6 @@ env/
 # Django
 *.log
 db.sqlite3
-/media/
 /static/
 
 # IDE
@@ -18,3 +17,7 @@ db.sqlite3
 .idea/
 *.swp
 EOF
+
+
+/static/CACHE/
+*.log
