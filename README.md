@@ -1,16 +1,35 @@
-# Интернет-магазин на Django
+# Домашняя работа №23 — Интернет-магазин на Django
 
-## Описание проекта
-Проект разрабатывается в рамках курса. Будет реализован интернет-магазин с каталогом, контактами и другими функциями.
+## Описание
+Реализовано приложение `catalog` с моделями:
+- `Category` — категории товаров
+- `Product` — продукты
+- `Contact` — контактные данные
 
-## Ветки
-- `main` – релизная ветка
-- `develop` – основная ветка разработки
-- `homework1`, `homework2` и т.д. – ветки для выполнения домашних заданий
+Добавлены:
+- Админка с фильтрами и поиском
+- Главная страница с последними 5 товарами
+- Страница контактов
+- Фикстуры и кастомная команда `fill_db`
+- Поля `created_at` и `updated_at`
 
-## Запуск проекта
-1. Создать виртуальное окружение: `python -m venv venv`
-2. Активировать: `venv\Scripts\activate` (Windows) или `source venv/bin/activate` (Linux/macOS)
-3. Установить зависимости: `pip install django`
-4. Выполнить миграции: `python manage.py migrate`
-5. Запустить сервер: `python manage.py runserver`
+## Как запустить
+
+
+`python -m venv venv`<br>
+`venv\Scripts\activate`<br>
+`pip install -r requirements.txt`<br>
+`python manage.py migrate`<br>
+`python manage.py createsuperuser`<br>
+`python manage.py runserver`<br>
+
+Админка: http://127.0.0.1:8000/admin/
+
+Кастомная команда
+``` Bash
+python manage.py fill_db
+```
+Заполняет базу тестовыми данными.
+
+
+![Скриншот приложения](howmework_screenshots\resultsSMD.png)

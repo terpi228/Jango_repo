@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,17 +75,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / '.env' )
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_db',
-        'USER': 'django_user',
-        'PASSWORD': 'django123',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'OPTIONS': {
-            'client_encoding': 'UTF8',
-        },
+        'ENGINE': os.getenv('POSTGRES_ENGINE'),
+        'NAME':   os.getenv('POSTGRES_NAME'),
+        'USER':   os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST':   os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT':   os.getenv('POSTGRES_PORT', '5432'),
+        # Опция «client_encoding» – передаём только если она задаётся
+        **({'OPTIONS': {'client_encoding': os.getenv('POSTGRES_CLIENT_ENCODING')}}
+           if os.getenv('POSTGRES_CLIENT_ENCODING') else {})
     }
 }
 

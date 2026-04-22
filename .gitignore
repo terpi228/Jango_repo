@@ -10,7 +10,6 @@ env/
 # Django
 *.log
 db.sqlite3
-/media/
 /static/
 
 # IDE
@@ -20,6 +19,5 @@ db.sqlite3
 EOF
 
 
-/media/
 /static/CACHE/
 *.log
