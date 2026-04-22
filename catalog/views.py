@@ -5,7 +5,7 @@ from .models import Product, Contact
 def home(request):
     products = Product.objects.all().order_by('-created_at')[:5]
     for p in products:
-        print(f"Последний товар: {p.name} — {p.price} руб.")
+        print(f"На главной: {p.name} — {p.price} руб.")
     return render(request, 'catalog/home.html', {'products': products})
 
 
