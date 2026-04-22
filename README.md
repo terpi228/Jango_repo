@@ -32,4 +32,4 @@ python manage.py fill_db
 Заполняет базу тестовыми данными.
 
 
-![Скриншот приложения](homework_screenshots/resultsSMD.png)
+![Скриншот приложения](https://github.com/terpi228/Jango_repo/blob/homework1/howmework_screenshots/resultsSMD.png)
