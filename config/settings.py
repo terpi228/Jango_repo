@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog',  
+    'catalog',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -91,8 +92,8 @@ DATABASES = {
         'HOST':   os.getenv('POSTGRES_HOST', 'localhost'),
         'PORT':   os.getenv('POSTGRES_PORT', '5432'),
         # Опция «client_encoding» – передаём только если она задаётся
-        **({'OPTIONS': {'client_encoding': os.getenv('POSTGRES_CLIENT_ENCODING')}}
-           if os.getenv('POSTGRES_CLIENT_ENCODING') else {})
+        # **({'OPTIONS': {'client_encoding': os.getenv('POSTGRES_CLIENT_ENCODING')}}
+        #    if os.getenv('POSTGRES_CLIENT_ENCODING') else {})
     }
 }
 
@@ -139,4 +140,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # если собираешь вручную
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

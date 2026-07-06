@@ -1,23 +1,46 @@
+from django.views.generic import ListView, DetailView, View, CreateView
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from .models import Product, Contact
+from .forms import ProductForm
 
 
-def home(request):
-    products = Product.objects.all().order_by('-created_at')[:5]
-    for p in products:
-        print(f"На главной: {p.name} — {p.price} руб.")
-    return render(request, 'catalog/home.html', {'products': products})
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return Product.objects.all().order_by('-created_at')[:5]
 
 
-def contacts(request):
-    contact = Contact.objects.first()
-    message_sent = False
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
+    pk_url_kwarg = 'product_id'
 
-    if request.method == 'POST':
-        # Здесь можно добавить логику отправки (пока просто заглушка)
-        message_sent = True
 
-    return render(request, 'catalog/contacts.html', {
-        'contact': contact,
-        'message_sent': message_sent
-    })
+class ContactsView(View):
+    template_name = 'catalog/contacts.html'
+
+    def get(self, request):
+        contact = Contact.objects.first()
+        return render(request, self.template_name, {
+            'contact': contact,
+            'message_sent': False,
+        })
+
+    def post(self, request):
+        contact = Contact.objects.first()
+        return render(request, self.template_name, {
+            'contact': contact,
+            'message_sent': True,
+        })
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:home')
