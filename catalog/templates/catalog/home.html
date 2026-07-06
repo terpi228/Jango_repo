@@ -5,7 +5,10 @@
 
 {% block content %}
     <h2 class="text-center mb-4">Новинки</h2>
+    <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3"> ➕ Добавить товар </a>    
     <div class="row text-center">
+
+
         {% for product in products %}
         <div class="col-md-6 col-lg-3 mb-4">
             <div class="card mb-4 box-shadow h-100">
@@ -35,6 +38,7 @@
                 </div>
             </div>
         </div>
+        
         {% empty %}
         <div class="col-12">
             <p class="text-center">Пока нет товаров. Зайдите позже.</p>
