@@ -35,6 +35,9 @@
                         <li>💳 Любая оплата</li>
                     </ul>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto">Купить</button>
+                    
+                            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
+                            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
                 </div>
             </div>
         </div>
