@@ -1,6 +1,5 @@
 from django.db import models
-
-from config import settings
+from django.conf import settings
 
 class Contact(models.Model):
     phone = models.CharField(max_length=20, verbose_name="Телефон")
@@ -13,7 +12,8 @@ class Contact(models.Model):
     class Meta:
         verbose_name = "Контакт"
         verbose_name_plural = "Контакты"
-        
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Наименование")
     description = models.TextField(verbose_name="Описание", blank=True, null=True)
@@ -35,7 +35,16 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
 
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Автор')
+    # УДАЛЯЕМ поле author, оставляем только owner
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Владелец"
+    )
+
+    is_published = models.BooleanField(default=False, verbose_name="Опубликован")
 
     def __str__(self):
         return self.name
@@ -43,5 +52,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
-
-
+        permissions = [
+            ("can_unpublish_product", "Может отменять публикацию продукта"),
+        ]

@@ -1,4 +1,3 @@
-<!-- catalog/templates/catalog/home.html -->
 {% extends 'catalog/base.html' %}
 
 {% block title %}Главная - Skystore{% endblock %}
@@ -39,9 +38,18 @@
 
                 {% if user.is_authenticated %}
                 <div class="mt-2">
+                    {% if user == product.owner or perms.catalog.can_unpublish_product %}
                     <a href="{% url 'catalog:product_update' product.pk %}"
                         class="btn btn-secondary btn-sm">Редактировать</a>
+                    {% endif %}
+                    {% if user == product.owner or perms.catalog.delete_product %}
                     <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                    {% endif %}
+                    {% if perms.catalog.can_unpublish_product %}
+                    <a href="{% url 'catalog:toggle_publish' product.pk %}" class="btn btn-warning btn-sm">
+                        {% if product.is_published %}Снять с публикации{% else %}Опубликовать{% endif %}
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>

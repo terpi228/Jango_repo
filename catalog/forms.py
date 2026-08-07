@@ -6,7 +6,7 @@ FORBIDDEN_WORDS = ['казино','криптовалюта','крипта','б�
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'image', 'category', 'price']
+        fields = ['name', 'description', 'image', 'category', 'price', 'is_published']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
@@ -15,7 +15,6 @@ class ProductForm(forms.ModelForm):
         cleaned_data = super().clean()
         name = cleaned_data.get('name')
         desc = cleaned_data.get('description')
-        # Проверяем оба поля на запрещённые слова
         for word in FORBIDDEN_WORDS:
             if word.lower() in (name or '').lower():
                 raise forms.ValidationError(f'Название содержит запрещённое слово: "{word}"')
@@ -38,10 +37,8 @@ class ProductForm(forms.ModelForm):
     def clean_image(self):
         image = self.cleaned_data.get('image')
         if image:
-            # Проверка размера (5 МБ = 5 * 1024 * 1024 байт)
             if image.size > 5 * 1024 * 1024:
                 raise forms.ValidationError('Размер файла не должен превышать 5 МБ.')
-            # Проверка расширения
             ext = image.name.split('.')[-1].lower()
             if ext not in ['jpg', 'jpeg', 'png']:
                 raise forms.ValidationError('Допустимы только форматы JPEG и PNG.')
