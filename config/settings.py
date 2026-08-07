@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / '.env' )
 
@@ -132,14 +132,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-
 
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = "admin@admin.com"
+AUTH_USER_MODEL = "users.User"
+
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/catalog/'
+LOGOUT_REDIRECT_URL = '/'

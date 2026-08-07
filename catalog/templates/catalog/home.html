@@ -4,48 +4,54 @@
 {% block title %}Главная - Skystore{% endblock %}
 
 {% block content %}
-    <h2 class="text-center mb-4">Новинки</h2>
-    <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3"> ➕ Добавить товар </a>    
-    <div class="row text-center">
+<h2 class="text-center mb-4">Новинки</h2>
+{% if user.is_authenticated %}
+<a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3"> ➕ Добавить товар </a>
+{% endif %}
+<div class="row text-center">
 
+    {% for product in products %}
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card mb-4 box-shadow h-100">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <span class="text-muted">Нет фото</span>
+            </div>
+            {% endif %}
 
-        {% for product in products %}
-        <div class="col-md-6 col-lg-3 mb-4">
-            <div class="card mb-4 box-shadow h-100">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                {% else %}
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                    <span class="text-muted">Нет фото</span>
+            <div class="card-header">
+                <a href="{% url 'catalog:product_detail' product.id %}" class="text-decoration-none text-dark">
+                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                </a>
+            </div>
+
+            <div class="card-body d-flex flex-column">
+                <h1 class="card-title pricing-card-title">{{ product.price }} ₽</h1>
+                <p class="text-start mt-2">{{ product.description|default:"Нет описания" }}</p>
+                <ul class="list-unstyled mt-3 mb-4 text-start">
+                    <li>✅ В наличии</li>
+                    <li>🚚 Доставка по всей стране</li>
+                    <li>💳 Любая оплата</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto">Купить</button>
+
+                {% if user.is_authenticated %}
+                <div class="mt-2">
+                    <a href="{% url 'catalog:product_update' product.pk %}"
+                        class="btn btn-secondary btn-sm">Редактировать</a>
+                    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                 </div>
                 {% endif %}
-
-                <div class="card-header">
-                    <a href="{% url 'catalog:product_detail' product.id %}" class="text-decoration-none text-dark">
-                        <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
-                    </a>
-                </div>
-
-                <div class="card-body d-flex flex-column">
-                    <h1 class="card-title pricing-card-title">{{ product.price }} ₽</h1>
-                    <p class="text-start mt-2">{{ product.description|default_if_none:"Описание отсутствует"|truncatewords:20 }}</p>
-                    <ul class="list-unstyled mt-3 mb-4 text-start">
-                        <li>✅ В наличии</li>
-                        <li>🚚 Доставка по всей стране</li>
-                        <li>💳 Любая оплата</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary mt-auto">Купить</button>
-                    
-                            <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
-                            <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
-                </div>
             </div>
         </div>
-        
-        {% empty %}
-        <div class="col-12">
-            <p class="text-center">Пока нет товаров. Зайдите позже.</p>
-        </div>
-        {% endfor %}
     </div>
+
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center">Пока нет товаров. Зайдите позже.</p>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

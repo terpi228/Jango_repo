@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin 
 from .models import Product, Contact
 from .forms import ProductForm
 
@@ -39,14 +40,15 @@ class ContactsView(View):
         })
 
 
-class ProductCreateView(CreateView):
+# ---------- ЗАЩИЩЁННЫЕ ПРЕДСТАВЛЕНИЯ ----------
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('catalog:home')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
@@ -55,7 +57,8 @@ class ProductUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('catalog:product_detail', kwargs={'product_id': self.object.pk})
 
-class ProductDeleteView(DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     pk_url_kwarg = 'product_id'

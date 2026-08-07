@@ -1,5 +1,7 @@
 from django.db import models
 
+from config import settings
+
 class Contact(models.Model):
     phone = models.CharField(max_length=20, verbose_name="Телефон")
     email = models.EmailField(verbose_name="Email")
@@ -32,6 +34,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена за покупку")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
+
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Автор')
 
     def __str__(self):
         return self.name
