@@ -149,3 +149,26 @@ AUTH_USER_MODEL = "users.User"
 LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/catalog/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# Настройки кеширования (Redis)
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'CONNECTION_POOL_CLASS': 'redis.connection.BlockingConnectionPool',
+            'CONNECTION_POOL_CLASS_KWARGS': {
+                'max_connections': 50,
+                'timeout': 20,
+                'protocol': 2,
+            },
+            'MAX_CONNECTIONS': 1000,
+            'PICKLE_VERSION': -1,
+        },
+        'KEY_PREFIX': 'skystore_',
+    }
+}
+
+

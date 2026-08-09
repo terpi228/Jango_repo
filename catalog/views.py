@@ -1,3 +1,5 @@
+#catalog/views.py
+
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -99,3 +101,36 @@ class TogglePublishView(LoginRequiredMixin, View):
         product.is_published = not product.is_published
         product.save()
         return redirect('catalog:product_detail', product_id=product.pk)
+
+from django.views.generic import ListView
+from .services import get_products_by_category
+
+class CategoryProductsView(ListView):
+    template_name = 'catalog/category_products.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs['pk']
+        return get_products_by_category(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from .models import Category
+        context['category'] = Category.objects.get(pk=self.kwargs['pk'])
+        return context
+
+from django.core.cache import cache
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        cache_key = 'all_products_list'
+        products = cache.get(cache_key)
+        if products is None:
+            queryset = Product.objects.filter(is_published=True).order_by('-created_at')[:5]
+            products = list(queryset)
+            cache.set(cache_key, products, 300)
+        return products
