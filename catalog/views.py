@@ -5,20 +5,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from .models import Product, Contact
+from django.core.cache import cache
+from .models import Product, Contact, Category
 from .forms import ProductForm
-
-
-class ProductListView(ListView):
-    model = Product
-    template_name = 'catalog/home.html'
-    context_object_name = 'products'
-
-    def get_queryset(self):
-        queryset = Product.objects.all().order_by('-created_at')
-        if not self.request.user.has_perm('catalog.can_unpublish_product'):
-            queryset = queryset.filter(is_published=True)
-        return queryset[:5]
+from .services import get_products_by_category
 
 
 class ProductDetailView(DetailView):
@@ -102,8 +92,6 @@ class TogglePublishView(LoginRequiredMixin, View):
         product.save()
         return redirect('catalog:product_detail', product_id=product.pk)
 
-from django.views.generic import ListView
-from .services import get_products_by_category
 
 class CategoryProductsView(ListView):
     template_name = 'catalog/category_products.html'
@@ -115,11 +103,9 @@ class CategoryProductsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        from .models import Category
         context['category'] = Category.objects.get(pk=self.kwargs['pk'])
         return context
 
-from django.core.cache import cache
 
 class ProductListView(ListView):
     model = Product
